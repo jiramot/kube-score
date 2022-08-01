@@ -1,10 +1,5 @@
 name: Docker
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 on:
   push:
     branches: [ "main" ]   
@@ -12,6 +7,8 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  HELM_VERSION: v3.9.2
+  KUBESCORE_VERSION: 1.14.0
 
 
 jobs:
@@ -56,9 +53,11 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.HELM_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            HELM_VERSION=${{ env.HELM_VERSION }}
+            KUBESCORE_VERSION=${{ env.KUBESCORE_VERSION }}
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
