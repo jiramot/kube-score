@@ -7,7 +7,7 @@ ARG KUBESCORE_VERSION
 ENV KUBESCORE_VERSION="${KUBESCORE_VERSION:-1.14.0}"
 ENV HELM_VERSION="${HELM_VERSION:-v3.9.2}"
 
-RUN apk add --update --no-cache wget git bash curl yq docker openssl
+RUN apk add --update --no-cache wget git bash curl yq openssl
 
 RUN wget "https://get.helm.sh/helm-${HELM_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz" -O - | tar -xz && \
     mv ${TARGETOS}-${TARGETARCH}/helm /usr/bin/helm && \
